@@ -92,3 +92,9 @@ export const getATasksFromTable = (orderBy = 'ASC', sortBy = 'title', limit = 10
     return result.rows;
 };
 
+export const getTaskByIdFromTable = id => {
+    const QUERY = `SELECT * FROM ${TABLE} WHERE id = $1`;
+    const result = pool.query(QUERY, [id]);
+
+    return result.rows[0];
+}
