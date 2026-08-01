@@ -6,6 +6,7 @@ const TABLE = app_env.task_table;
 const VALID_STATUSES = ['TODO', 'IN_PROGRESS', 'DONE'];
 const VALID_PRIORITIES = ['LOW', 'MEDIUM', 'HIGH'];
 const VALID_ORDERBY = ['ASC', 'DESC'];
+const ALLOWED_SORT_FIELDS = ['title', 'priority', 'created_at', 'due_date'];
 
 const validate = (status = 'TODO', priority = 'LOW') => {
     const STATUS = status.toUpperCase();
@@ -69,28 +70,24 @@ export const deleteFromTable = (id) => {
     return result.rows[0];
 };
 
-export const getAllTasksFromTable = () => {
-    const QUERY = `SELECT * FROM ${TABLE}`;
+export const getATasksFromTable = (orderBy = 'ASC', sortBy = 'title', limit = 10, offset = 0) => {
+    const ORDER_BY = orderBy.upperCase();
+    const SORT_BY = sortBy.toLowerCase();
 
-    const result = pool.query(QUERY);
-
-    return result.rows;
-};
-
-export const getATasksFromTable = (id, orderBy, limit, offset) => {
-    const ORDERBY = orderBy.upperCase();
-
-    if (!VALID_ORDERBY.includes(ORDERBY)) {
+    if (!VALID_ORDERBY.includes(ORDER_BY)) {
         throw new Error(`Invalid order direction: "${orderBy}". Must be "ASC" or "DESC".`);
+    };
+
+    if (!ALLOWED_SORT_FIELDS.includes(SORT_BY)) {
+        throw new Error(`Invalid sort column: "${sortBy}". Must be one of: ${ALLOWED_SORT_FIELDS.join(', ')}`);
     }
 
     const QUERY = `SELECT * FROM ${TABLE} 
-                   WHERE id = $1 
-                   ORDER BY title ${ORDERBY} 
-                   LIMIT $2 OFFSET $3`
+                   ORDER BY ${SORT_BY} ${ORDER_BY} 
+                   LIMIT $1 OFFSET $2`
         ;
 
-    const result = pool.query(QUERY, [id, limit, offset]);
+    const result = pool.query(QUERY, [limit, offset]);
 
     return result.rows;
 };
