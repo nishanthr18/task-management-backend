@@ -1,0 +1,19 @@
+{
+  "name": "task-mgt",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "docker compose up -d",
+    "migration": "node ./src/config/migrate.js",
+    "clean-volume": "docker volume prune"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "pg": "^8.22.0"
+  }
+}
