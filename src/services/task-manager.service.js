@@ -26,7 +26,7 @@ const validate = (status = 'TODO', priority = 'LOW') => {
     return { STATUS, PRIORITY };
 };
 
-export const getAllTasks = async (orderBy = 'ASC', sortBy = 'title', limit = 10, offset = 0) => {
+export const getAllTasksFromService = async (orderBy = 'ASC', sortBy = 'title', limit = 10, offset = 0) => {
     try {
         const ORDER_BY = orderBy.upperCase();
         const SORT_BY = sortBy.toLowerCase();
@@ -45,7 +45,7 @@ export const getAllTasks = async (orderBy = 'ASC', sortBy = 'title', limit = 10,
     }
 };
 
-export const getTaskById = async (id) => {
+export const getTaskByIdFromService = async (id) => {
     if (!id) {
         throw new Error('Id is required');
     };
@@ -58,7 +58,7 @@ export const getTaskById = async (id) => {
     }
 };
 
-export const deleteTask = async (id) => {
+export const deleteTaskFromService = async (id) => {
     if (!id) {
         throw new Error('Id is required');
     }
@@ -70,7 +70,7 @@ export const deleteTask = async (id) => {
     }
 };
 
-export const updateTask = async (title, description, status, priority, dueDate) => {
+export const updateTaskFromService = async (title, description, status, priority, dueDate) => {
     try {
         const { STATUS, PRIORITY } = validate(status, priority);
         return (await updateValuesToTable(title, description, STATUS, PRIORITY, dueDate));
@@ -79,7 +79,7 @@ export const updateTask = async (title, description, status, priority, dueDate) 
     }
 };
 
-export const insertTask = async (title, description, status, priority, dueDate) => {
+export const insertTaskFromService = async (title, description, status, priority, dueDate) => {
     try {
         const { STATUS, PRIORITY } = validate(status, priority);
 
